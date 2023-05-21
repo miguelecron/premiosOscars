@@ -1,3 +1,6 @@
+import com.google.gson.Gson;
+
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,11 +26,13 @@ public class ActricesPremiadas {
 
     public boolean addActriz(Actriz actriz, Pelicula pelicula) {
 
-       if (!(actricesPremiadas.add(actriz) && actriz.aniadirPelicula(pelicula))){
-           return buscarActriz(actriz).aniadirPelicula(pelicula);
-       }
-       return true;
+        if (!(actricesPremiadas.add(actriz) && actriz.aniadirPelicula(pelicula))) {
+            return buscarActriz(actriz).aniadirPelicula(pelicula);
+        }
+        return true;
     }
+
+
 
     private Actriz buscarActriz(Actriz actrizBuscada) {
         for (Actriz actriz : actricesPremiadas) {
@@ -38,18 +43,18 @@ public class ActricesPremiadas {
         return null;
     }
 
-    public List<Actriz> actricesOrdenadasPorPremios(){
+    public List<Actriz> actricesOrdenadasPorPremios() {
         List<Actriz> actricesOrdenadas = new ArrayList<>(actricesPremiadas);
         Collections.sort(actricesOrdenadas, new CompararActricesPorPremios());  //Por qué CompararPorPremios() con parentesis?
         return actricesOrdenadas;
     }
 
-    public void generarHtmlActrices(String nombreFichero, String tituloPagina, List<Actriz> actricesP) {
+    public void generarTablaHtml(String nombreFichero, String tituloPagina, List<Actriz> actricesP) {
         PrintWriter impresion = null;
 
         try {
             impresion = new PrintWriter(new BufferedWriter(new FileWriter("src/main/resources/" + nombreFichero + ".html")));
-            impresion.println(cabeceraHtml(tituloPagina, estilos()));
+            impresion.println(cabeceraHtml(tituloPagina, estilosTabla()));
             impresion.println("<body>");
             impresion.println("<table>");
             impresion.println(cabeceraTabla());
@@ -58,22 +63,22 @@ public class ActricesPremiadas {
             for (int i = 0; i < actricesOrdenadasPorPremios().size(); i++) {
                 int oscars = actricesP.get(i).getPeliculas().size();
                 impresion.println("<tr>");
-                    impresion.print("<td>");
-                    impresion.print(actricesP.get(i).getNombre());
-                    impresion.println("</td>");
+                impresion.print("<td>");
+                impresion.print(actricesP.get(i).getNombre());
+                impresion.println("</td>");
 
-                    impresion.print("<td>");
-                    impresion.print(oscars);
-                    impresion.print(" Oscars");
-                    impresion.println("</td>");
+                impresion.print("<td>");
+                impresion.print(oscars);
+                impresion.print(" Oscars");
+                impresion.println("</td>");
 
-                    impresion.print("<td colspan=\"" + oscars + "\">");
+                impresion.print("<td colspan=\"" + oscars + "\">");
                 for (int j = 0; j < oscars; j++) {
                     impresion.print("\t- ");
                     impresion.print(actricesP.get(i).getPeliculasOrdenadasPorAnio().get(j).getNombre());
                     impresion.print(", ");
-                    impresion.print(actricesP.get(i).getPeliculasOrdenadasPorAnio().get(j).getAnio());
-                    if (j < oscars -1){
+                    impresion.print(actricesP.get(i).getPeliculasOrdenadasPorAnio().get(j).getAnioGanador());
+                    if (j < oscars - 1) {
                         impresion.print("<br>");
                     }
                 }
@@ -91,10 +96,11 @@ public class ActricesPremiadas {
             if (impresion != null) {
                 impresion.close();
             }
+            System.out.println("Generado html de actrices premiadas");
         }
     }
 
-    private String cabeceraHtml(String tituloPagina, String estilos){
+    private String cabeceraHtml(String tituloPagina, String estilos) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("<!DOCTYPE html>");
@@ -111,7 +117,7 @@ public class ActricesPremiadas {
         return sb.toString();
     }
 
-    private String estilos(){
+    private String estilosTabla() {
         StringBuilder sb = new StringBuilder();
 
         sb.append("<style>");
@@ -128,7 +134,7 @@ public class ActricesPremiadas {
         return sb.toString();
     }
 
-    private String cabeceraTabla(){
+    private String cabeceraTabla() {
         StringBuilder sb = new StringBuilder();
         sb.append("<thead>");
         sb.append(" <tr>");
@@ -140,4 +146,78 @@ public class ActricesPremiadas {
 
         return sb.toString();
     }
+
+    public Map<Actriz, ArrayList<Pelicula>> yayasPremiadas() {
+        Map<Actriz, ArrayList<Pelicula>> yayasPremiadas = new HashMap<>();
+
+        for (Actriz actriz : actricesPremiadas) {
+
+            for (Pelicula pelicula : actriz.getPeliculas()) {
+
+                if (pelicula.getEdadActriz() > 65) {
+
+                    if (yayasPremiadas.containsKey(actriz)) {
+                        yayasPremiadas.get(actriz).add(pelicula);
+                    } else {
+                        ArrayList<Pelicula> peliculasYayas = new ArrayList<>();
+                        peliculasYayas.add(pelicula);
+                        yayasPremiadas.put(actriz, peliculasYayas);
+                    }
+
+                }
+            }
+        }
+        return yayasPremiadas;
+    }
+
+    public void generarHtmlYayasPremiadas(String nombreFichero, String tituloPagina, Map<Actriz, ArrayList<Pelicula>> yayasPremiadas){
+        PrintWriter impresion = null;
+
+        try {
+            impresion = new PrintWriter(new BufferedWriter(new FileWriter("src/main/resources/" + nombreFichero + ".html")));
+
+            impresion.println(cabeceraHtml(tituloPagina, "<style></style>"));
+            impresion.println("<body>");
+                impresion.println("<ol>");
+
+                    for (Actriz actriz: yayasPremiadas.keySet()) {
+                         impresion.println("<li>");
+                               impresion.print("-");
+                               impresion.println(actriz.getNombre());
+                                    impresion.println("<ul>");
+                                         for (Pelicula pelicula: yayasPremiadas.get(actriz)) {
+                                             impresion.print("<li>");
+                                             impresion.print(pelicula.getEdadActriz());
+                                             impresion.print(" años, ");
+                                             impresion.print(pelicula.getNombre());
+                                             impresion.println("</li>");
+                                         }
+                                      impresion.println("</ul>");
+                         impresion.println("</li>");
+                    }
+                impresion.println("</ol>");
+            impresion.println("</body>");
+            impresion.println("</html>");
+
+        } catch (IOException e){
+            e.printStackTrace();
+        } finally {
+            if (impresion != null){
+                impresion.close();
+            }
+            System.out.println("Generado html de yayas premiadas");
+        }
+    }
+
+    public void generarJson(){
+        Gson gson = new Gson();
+
+        try {
+            gson.toJson(actricesOrdenadasPorPremios(), new FileWriter("src/main/resources/actricesJson"));
+            System.out.println("Generado Json de actrices ordenadas por premios");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

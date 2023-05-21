@@ -8,14 +8,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ActricesPremiadasTest {
     ActricesPremiadas ap = new ActricesPremiadas();
-    Actriz a1 = new Actriz(25, "Amaia Salamanca");
-    Actriz a2 = new Actriz(26, "Clara Lago");
-    Actriz a21 = new Actriz(27, "Clara Lago");
-    Actriz a3 = new Actriz(30, "Blanca Suárez");
-    Pelicula p1 = new Pelicula(1990, "Pelicula1");
-    Pelicula p11 = new Pelicula(1991, "Pelicula1");
-    Pelicula p2 = new Pelicula(1995, "Pelicula2");
-    Pelicula p3 = new Pelicula(2000, "Pelicula3");
+    Actriz a1 = new Actriz( "Amaia Salamanca");
+    Actriz a2 = new Actriz( "Clara Lago");
+    Actriz a21 = new Actriz( "Clara Lago");
+    Actriz a3 = new Actriz("Blanca Suárez");
+    Pelicula p1 = new Pelicula(1990, "Pelicula1", 39);
+    Pelicula p11 = new Pelicula(1991, "Pelicula1", 29);
+    Pelicula p2 = new Pelicula(1995, "Pelicula2", 84);
+    Pelicula p3 = new Pelicula(2000, "Pelicula3", 28);
 
 
     @Test

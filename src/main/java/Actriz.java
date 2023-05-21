@@ -2,22 +2,12 @@ import java.util.*;
 
 public class Actriz {
 
-    private int edad;
     private String nombre;
     private Set<Pelicula> peliculas;
 
-    public Actriz(int edad, String nombre) {
-        this.edad = edad;
+    public Actriz(String nombre) {
         this.nombre = nombre;
         this.peliculas = new HashSet<>();
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
     }
 
     public String getNombre() {
@@ -60,7 +50,6 @@ public class Actriz {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Actriz{");
-        sb.append("edad=").append(edad);
         sb.append(", nombre='").append(nombre).append('\'');
         sb.append(", peliculas=").append(peliculas);
         sb.append('}');

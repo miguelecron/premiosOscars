@@ -2,20 +2,22 @@ import java.util.Objects;
 
 public class Pelicula {
 
-    private int anio;
+    private int anioGanador;
     private String nombre;
+    private int edadActriz;
 
-    public Pelicula(int anio, String nombre) {
-        this.anio = anio;
+    public Pelicula(int anioGanador, String nombre, int edadActriz) {
+        this.anioGanador = anioGanador;
         this.nombre = nombre;
+        this.edadActriz = edadActriz;
     }
 
-    public int getAnio() {
-        return anio;
+    public int getAnioGanador() {
+        return anioGanador;
     }
 
-    public void setAnio(int anio) {
-        this.anio = anio;
+    public void setAnioGanador(int anioGanador) {
+        this.anioGanador = anioGanador;
     }
 
     public String getNombre() {
@@ -26,8 +28,12 @@ public class Pelicula {
         this.nombre = nombre;
     }
 
-    public Pelicula(String nombre) {
-        this.nombre = nombre;
+    public int getEdadActriz() {
+        return edadActriz;
+    }
+
+    public void setEdadActriz(int edadActriz) {
+        this.edadActriz = edadActriz;
     }
 
     @Override
@@ -48,8 +54,9 @@ public class Pelicula {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Pelicula{");
-        sb.append("anio=").append(anio);
+        sb.append("anioGanador=").append(anioGanador);
         sb.append(", nombre='").append(nombre).append('\'');
+        sb.append(", edadActriz=").append(edadActriz);
         sb.append('}');
         return sb.toString();
     }

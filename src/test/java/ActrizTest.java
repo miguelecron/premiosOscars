@@ -7,10 +7,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ActrizTest {
 
-    Actriz actriz = new Actriz(25, "Actriz1");
-        Pelicula p1 = new Pelicula(1990, "Pelicula1");
-        Pelicula p2 = new Pelicula(1995, "Pelicula2");
-        Pelicula p3 = new Pelicula(2000, "Pelicula3");
+    Actriz actriz = new Actriz( "Actriz1");
+        Pelicula p1 = new Pelicula(1990, "Pelicula1", 24);
+        Pelicula p2 = new Pelicula(1995, "Pelicula2", 65);
+        Pelicula p3 = new Pelicula(2000, "Pelicula3", 17);
+
 
     @org.junit.jupiter.api.Test
     void aniadirPelicula() {

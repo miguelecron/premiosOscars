@@ -5,15 +5,18 @@ import java.io.IOException;
 
 public class AppOscars {
 
-    public static final String DELIMITADOR = ",";
-
     public static void main(String[] args) {
-        ActricesPremiadas listaActrices = new ActricesPremiadas();
-        leerFichero(listaActrices);
-        listaActrices.generarHtmlActrices("actricesPremiadas", "Actrices premiadas con Oscars", listaActrices.actricesOrdenadasPorPremios());
+
+        ActricesPremiadas ap = leerFichero();
+
+        ap.generarTablaHtml("actricesPremiadas", "Actrices premiadas con Oscars", ap.actricesOrdenadasPorPremios());
+        ap.generarHtmlYayasPremiadas("yayasPremiadas", "Yayas premiadas", ap.yayasPremiadas());
+        ap.generarJson();
     }
 
-    public static void leerFichero(ActricesPremiadas ac) {
+    public static ActricesPremiadas leerFichero() {
+
+        ActricesPremiadas listaActrices = new ActricesPremiadas();
 
         BufferedReader entrada = null;
         try {
@@ -23,20 +26,19 @@ public class AppOscars {
             linea = entrada.readLine();
 
             while (linea != null) {
-                String[] datosFichero = linea.split(DELIMITADOR);
+                String[] datosFichero = linea.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 
                 //Creamos una nueva actriz
-                Actriz actriz = new Actriz(
-                        Integer.parseInt(datosFichero[2].trim()),  // edad actriz
-                        datosFichero[3].trim());                           // nombre actriz
+                Actriz actriz = new Actriz(datosFichero[3].trim().replaceAll("\"", "")); // nombre actriz
 
                 //Creamos una nueva película
                 Pelicula pelicula = new Pelicula(
-                        Integer.parseInt(datosFichero[1].trim()),  // anio pelicula
-                        datosFichero[4].trim());                           // nombre pelicula
+                        Integer.parseInt(datosFichero[1].trim()),  // anio pelicula ganadora
+                        datosFichero[4].trim().replaceAll("\"", ""),                                 // nombre pelicula
+                        Integer.parseInt(datosFichero[2].trim()));           // edad actriz en el momento del premio);
 
                 //pasamos la actiz a la clase contenedora
-                ac.addActriz(actriz, pelicula);
+                listaActrices.addActriz(actriz, pelicula);
                 linea = entrada.readLine();
             }
 
@@ -50,9 +52,10 @@ public class AppOscars {
                 try {
                     entrada.close();
                 } catch (NullPointerException | IOException e) {
-                    System.out.println(e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }
+        return listaActrices;
     }
 }
