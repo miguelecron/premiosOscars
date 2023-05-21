@@ -1,6 +1,4 @@
 import com.google.gson.Gson;
-
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,8 +30,6 @@ public class ActricesPremiadas {
         return true;
     }
 
-
-
     private Actriz buscarActriz(Actriz actrizBuscada) {
         for (Actriz actriz : actricesPremiadas) {
             if (actrizBuscada.equals(actriz)) {
@@ -45,19 +41,75 @@ public class ActricesPremiadas {
 
     public List<Actriz> actricesOrdenadasPorPremios() {
         List<Actriz> actricesOrdenadas = new ArrayList<>(actricesPremiadas);
-        Collections.sort(actricesOrdenadas, new CompararActricesPorPremios());  //Por qué CompararPorPremios() con parentesis?
+        Collections.sort(actricesOrdenadas, new CompararActricesPorPremios());
         return actricesOrdenadas;
     }
+
+    // -------------------------------------- Generadores de html---------------------------------
+
+    // -------------------------------------- Head de html---------------------------------
+
+    private String headHtml(String tituloPagina, String estilos) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<!DOCTYPE html>");
+        sb.append("<html lang=\"es-Es\">");
+        sb.append("<head>");
+        sb.append("<meta charset=\"UTF-8\">");
+        sb.append("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">");
+        sb.append(" <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+        sb.append("<title>").append(tituloPagina).append("</title>");
+        sb.append(estilos);
+        sb.append("</head>");
+        sb.append("");
+
+        return sb.toString();
+    }
+
+    // -------------------------------------- Estilos y cabecera para tabla html---------------------------------
+
+    private String estilosTabla() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<style>");
+        sb.append("table {");
+        sb.append("width: 90%;");
+        sb.append("border-collapse: collapse;");
+        sb.append("}");
+        sb.append("table, th,td {");
+        sb.append("border: 1px solid black;");
+        sb.append("}");
+        sb.append("th {background-color: gold;}");
+        sb.append(" </style>");
+
+        return sb.toString();
+    }
+
+    private String cabeceraTablaHtml() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<thead>");
+        sb.append(" <tr>");
+        sb.append(" <th>Nombre de la actiz</th>");
+        sb.append(" <th>Oscars ganados</th>");
+        sb.append(" <th>Películas premiadas</th>");
+        sb.append(" </tr>");
+        sb.append("</thead>");
+
+        return sb.toString();
+    }
+
+
+    // -------------------------------------- Tabla de html con actrices ---------------------------------
 
     public void generarTablaHtml(String nombreFichero, String tituloPagina, List<Actriz> actricesP) {
         PrintWriter impresion = null;
 
         try {
             impresion = new PrintWriter(new BufferedWriter(new FileWriter("src/main/resources/" + nombreFichero + ".html")));
-            impresion.println(cabeceraHtml(tituloPagina, estilosTabla()));
+            impresion.println(headHtml(tituloPagina, estilosTabla()));
             impresion.println("<body>");
             impresion.println("<table>");
-            impresion.println(cabeceraTabla());
+            impresion.println(cabeceraTablaHtml());
             impresion.println("<tbody>");
 
             for (int i = 0; i < actricesOrdenadasPorPremios().size(); i++) {
@@ -75,7 +127,7 @@ public class ActricesPremiadas {
                 impresion.print("<td colspan=\"" + oscars + "\">");
                 for (int j = 0; j < oscars; j++) {
                     impresion.print("\t- ");
-                    impresion.print(actricesP.get(i).getPeliculasOrdenadasPorAnio().get(j).getNombre());
+                    impresion.print(actricesP.get(i).getPeliculasOrdenadasPorAnio().get(j).getTitulo());
                     impresion.print(", ");
                     impresion.print(actricesP.get(i).getPeliculasOrdenadasPorAnio().get(j).getAnioGanador());
                     if (j < oscars - 1) {
@@ -100,52 +152,9 @@ public class ActricesPremiadas {
         }
     }
 
-    private String cabeceraHtml(String tituloPagina, String estilos) {
-        StringBuilder sb = new StringBuilder();
 
-        sb.append("<!DOCTYPE html>");
-        sb.append("<html lang=\"es-Es\">");
-        sb.append("<head>");
-        sb.append("<meta charset=\"UTF-8\">");
-        sb.append("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">");
-        sb.append(" <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-        sb.append("<title>").append(tituloPagina).append("</title>");
-        sb.append(estilos);
-        sb.append("</head>");
-        sb.append("");
+    // -------------------------------------- Buscador actrices mayores de 65 anios premiadas---------------------------
 
-        return sb.toString();
-    }
-
-    private String estilosTabla() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("<style>");
-        sb.append("table {");
-        sb.append("width: 90%;");
-        sb.append("border-collapse: collapse;");
-        sb.append("}");
-        sb.append("table, th,td {");
-        sb.append("border: 1px solid black;");
-        sb.append("}");
-        sb.append("th {background-color: gold;}");
-        sb.append(" </style>");
-
-        return sb.toString();
-    }
-
-    private String cabeceraTabla() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<thead>");
-        sb.append(" <tr>");
-        sb.append(" <th>Nombre de la actiz</th>");
-        sb.append(" <th>Oscars ganados</th>");
-        sb.append(" <th>Películas premiadas</th>");
-        sb.append(" </tr>");
-        sb.append("</thead>");
-
-        return sb.toString();
-    }
 
     public Map<Actriz, ArrayList<Pelicula>> yayasPremiadas() {
         Map<Actriz, ArrayList<Pelicula>> yayasPremiadas = new HashMap<>();
@@ -170,13 +179,16 @@ public class ActricesPremiadas {
         return yayasPremiadas;
     }
 
+    // -------------------------------------- Html con actrices mayores de 65 anios premiadas---------------------------
+
+
     public void generarHtmlYayasPremiadas(String nombreFichero, String tituloPagina, Map<Actriz, ArrayList<Pelicula>> yayasPremiadas){
         PrintWriter impresion = null;
 
         try {
             impresion = new PrintWriter(new BufferedWriter(new FileWriter("src/main/resources/" + nombreFichero + ".html")));
 
-            impresion.println(cabeceraHtml(tituloPagina, "<style></style>"));
+            impresion.println(headHtml(tituloPagina, "<style></style>"));
             impresion.println("<body>");
                 impresion.println("<ol>");
 
@@ -189,8 +201,9 @@ public class ActricesPremiadas {
                                              impresion.print("<li>");
                                              impresion.print(pelicula.getEdadActriz());
                                              impresion.print(" años, ");
-                                             impresion.print(pelicula.getNombre());
+                                             impresion.print(pelicula.getTitulo());
                                              impresion.println("</li>");
+                                             impresion.println("<br>");
                                          }
                                       impresion.println("</ul>");
                          impresion.println("</li>");
@@ -209,6 +222,10 @@ public class ActricesPremiadas {
         }
     }
 
+
+    // -------------------------------------- Generador Json ---------------------------
+
+
     public void generarJson(){
         Gson gson = new Gson();
 
@@ -219,5 +236,37 @@ public class ActricesPremiadas {
             throw new RuntimeException(e);
         }
     }
+
+
+    // -------------------------------------- Buscador peliculas por cadena de texto -----------------------------------
+
+    private List<String> buscadorPeliculas(String titulo){
+        List<String> peliculasMatch = new ArrayList<>();
+
+        for (Actriz actriz: actricesPremiadas) {
+            for (Pelicula pelicula: actriz.getPeliculas()){
+                if (pelicula.getTitulo().toLowerCase().contains(titulo.toLowerCase())){
+                    peliculasMatch.add(new String(
+                            "- " + pelicula.getTitulo() +
+                                    ", " + pelicula.getAnioGanador() +
+                                    ". " + actriz.getNombre() +
+                                    "(" + pelicula.getEdadActriz() + ")"
+                    ));
+                }
+            }
+        }
+        return peliculasMatch;
+    }
+
+    public void buscarPeliculasPorTitulo(String titulo){
+        List<String> peliculas = buscadorPeliculas(titulo);
+
+        System.out.println("Películas que empiezan por " +  titulo);
+
+        for (String str:peliculas) {
+            System.out.println(str);
+        }
+    }
+
 
 }

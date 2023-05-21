@@ -3,12 +3,12 @@ import java.util.Objects;
 public class Pelicula {
 
     private int anioGanador;
-    private String nombre;
+    private String titulo;
     private int edadActriz;
 
     public Pelicula(int anioGanador, String nombre, int edadActriz) {
         this.anioGanador = anioGanador;
-        this.nombre = nombre;
+        this.titulo = nombre;
         this.edadActriz = edadActriz;
     }
 
@@ -20,12 +20,12 @@ public class Pelicula {
         this.anioGanador = anioGanador;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public int getEdadActriz() {
@@ -43,19 +43,19 @@ public class Pelicula {
 
         Pelicula pelicula = (Pelicula) o;
 
-        return Objects.equals(nombre, pelicula.nombre);
+        return Objects.equals(titulo, pelicula.titulo);
     }
 
     @Override
     public int hashCode() {
-        return nombre != null ? nombre.hashCode() : 0;
+        return titulo != null ? titulo.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Pelicula{");
         sb.append("anioGanador=").append(anioGanador);
-        sb.append(", nombre='").append(nombre).append('\'');
+        sb.append(", nombre='").append(titulo).append('\'');
         sb.append(", edadActriz=").append(edadActriz);
         sb.append('}');
         return sb.toString();

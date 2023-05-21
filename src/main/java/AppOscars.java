@@ -11,7 +11,8 @@ public class AppOscars {
 
         ap.generarTablaHtml("actricesPremiadas", "Actrices premiadas con Oscars", ap.actricesOrdenadasPorPremios());
         ap.generarHtmlYayasPremiadas("yayasPremiadas", "Yayas premiadas", ap.yayasPremiadas());
-        ap.generarJson();
+        // ap.generarJson();
+        ap.buscarPeliculasPorTitulo("good");
     }
 
     public static ActricesPremiadas leerFichero() {
