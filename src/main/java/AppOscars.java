@@ -10,9 +10,10 @@ public class AppOscars {
         ActricesPremiadas ap = leerFichero();
 
         ap.generarTablaHtml("actricesPremiadas", "Actrices premiadas con Oscars", ap.actricesOrdenadasPorPremios());
-        ap.generarHtmlYayasPremiadas("yayasPremiadas", "Yayas premiadas", ap.yayasPremiadas());
+        ap.generarHtmlPremiadasConXEdad("yayasPremiadas", "Yayas premiadas", ap.premiadasConXEdad(65));
         // ap.generarJson();
         ap.buscarPeliculasPorTitulo("good");
+        ap.generarCsvSupuestoTroll(33, "csvTroll");
     }
 
     public static ActricesPremiadas leerFichero() {

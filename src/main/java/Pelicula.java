@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Pelicula {
+public class Pelicula implements Comparable<Pelicula> {
 
     private int anioGanador;
     private String titulo;
@@ -59,5 +59,10 @@ public class Pelicula {
         sb.append(", edadActriz=").append(edadActriz);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public int compareTo(Pelicula o) {
+        return this.titulo.compareTo(o.titulo);
     }
 }
