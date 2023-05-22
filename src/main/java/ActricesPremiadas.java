@@ -364,6 +364,8 @@ public class ActricesPremiadas {
 
         try (PrintWriter impresion = new PrintWriter(new BufferedWriter(new FileWriter("src/main/resources/" + nombreFichero + ".csv")))) {
 
+            impresion.print("pelicula;");
+            impresion.println("actriz");
             for (Pelicula pelicula : peliculasOrdenadas) {
                 impresion.print(peliculaActriz.get(pelicula).getNombre());
                 impresion.print(";");
