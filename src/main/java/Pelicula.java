@@ -5,6 +5,7 @@ public class Pelicula implements Comparable<Pelicula> {
     private int anioGanador;
     private String titulo;
     private int edadActriz;
+    private Actriz actriz;
 
     public Pelicula(int anioGanador, String nombre, int edadActriz) {
         this.anioGanador = anioGanador;
@@ -34,6 +35,14 @@ public class Pelicula implements Comparable<Pelicula> {
 
     public void setEdadActriz(int edadActriz) {
         this.edadActriz = edadActriz;
+    }
+
+    public Actriz getActriz() {
+        return actriz;
+    }
+
+    public void setActriz(Actriz actriz) {
+        this.actriz = actriz;
     }
 
     @Override

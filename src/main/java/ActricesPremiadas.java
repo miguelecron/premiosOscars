@@ -240,13 +240,13 @@ public class ActricesPremiadas {
 
             impresion.println(headHtml(tituloPagina, "<style></style>"));
             impresion.println("<body>");
-            impresion.println("<ol>");
+            impresion.println("<ul>");
 
             for (Actriz actriz : actrices.keySet()) {
                 impresion.println("<li>");
                 impresion.print("-");
                 impresion.println(actriz.getNombre());
-                impresion.println("<ul>");
+                impresion.println("<ol>");
                 for (Pelicula pelicula : actrices.get(actriz)) {
                     impresion.print("<li>");
                     impresion.print(pelicula.getEdadActriz());
@@ -255,10 +255,10 @@ public class ActricesPremiadas {
                     impresion.println("</li>");
                     impresion.println("<br>");
                 }
-                impresion.println("</ul>");
+                impresion.println("</ol>");
                 impresion.println("</li>");
             }
-            impresion.println("</ol>");
+            impresion.println("</ul>");
             impresion.println("</body>");
             impresion.println("</html>");
 
@@ -293,37 +293,43 @@ public class ActricesPremiadas {
 
     /**
      * Busca las películas que contienen en el titulo el string pasado como parametro
-     * @param titulo charSecuence del titulo
+     * @param patron charSecuence del titulo
      * @return un ArrayList de las peliculas que contienen en el título el charSecuence pasaado por parametro,
      * las devuelve en formato String "- titulo pelicula, anio ganador. Nombre actriz (edad)"
      */
-    private List<String> buscadorPeliculas(String titulo){
-        List<String> peliculasMatch = new ArrayList<>();
 
-        for (Actriz actriz: actricesPremiadas) {
+    private Collection<Pelicula> buscadorPeliculas(String patron){
+        Set<Pelicula> peliculasBuscadas = new HashSet<>();
+
+        for (Actriz actriz:actricesPremiadas){
             for (Pelicula pelicula: actriz.getPeliculas()){
-                if (pelicula.getTitulo().toLowerCase().contains(titulo.toLowerCase())){
-                    peliculasMatch.add("- " + pelicula.getTitulo() +
-                            ", " + pelicula.getAnioGanador() +
-                            ". " + actriz.getNombre() +
-                            "(" + pelicula.getEdadActriz() + ")");
+                if (pelicula.getTitulo().toLowerCase().contains(patron.toLowerCase())){
+                    pelicula.setActriz(actriz);
+                    peliculasBuscadas.add(pelicula);
                 }
             }
         }
-        return peliculasMatch;
+        return peliculasBuscadas;
     }
+
 
     /**
      * Imprime la lista de peliculas que coinciden con el parametro pasado
      * @param titulo titulo completo o parte del titulo de una pelicula
      */
     public void buscarPeliculasPorTitulo(String titulo){
-        List<String> peliculas = buscadorPeliculas(titulo);
+      Collection<Pelicula> peliculasBuscadas = buscadorPeliculas(titulo);
 
         System.out.println("Películas que empiezan por " +  titulo);
 
-        for (String str:peliculas) {
-            System.out.println(str);
+        for (Pelicula pelicula : peliculasBuscadas) {
+            System.out.print("- ");
+            System.out.print(pelicula.getTitulo());
+            System.out.print(", ");
+            System.out.print(pelicula.getAnioGanador());
+            System.out.print(". ");
+            System.out.print(pelicula.getActriz().getNombre());
+            System.out.println(" (" + pelicula.getEdadActriz() + ")");
         }
     }
 
